@@ -11,12 +11,13 @@
 
 template <typename T>
 Heap<T>::Heap(bool isMinHeap) : minHeap(isMinHeap) {
-  // COMPLETE HERE
+  data=std::vector<T>();
 }
 
 template <typename T>
 void Heap<T>::insert(T const& element) {
-  // COMPLETE HERE
+  data.push_back(element);
+  
 }
 
 template <typename T>
