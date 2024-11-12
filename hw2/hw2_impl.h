@@ -2,88 +2,97 @@
 #define HW2_IMPL_H
 
 #include <algorithm>
-#include <cstdlib>
+#include <stdexcept>
 #include <vector>
 
 #include "hw2.h"
 
-// Heap
-
 template <typename T>
-Heap<T>::Heap(bool isMinHeap) : minHeap(isMinHeap) {
-  data=std::vector<T>();
-}
+Heap<T>::Heap(bool isMinHeap) : minHeap(isMinHeap), size_(0) {}
 
+// Insertar un elemento en el Heap y ajustar posición
 template <typename T>
 void Heap<T>::insert(T const& element) {
-  data.push_back(element);
-  int index = data.size()-1;
-  while (index > 0) {
-    int parent = (index - 1) / 2;
+    queue_.push_back(element);
+    size_++;
 
-    if ((minHeap && data[index] < data[parent]) || (!minHeap && data[index] > data[parent])) {
-      std::swap(data[index], data[parent]);
-      index = parent; 
-    } else {
-      break;
-    }
-  }
   
+    int idx = size_ - 1;
+    while (idx > 0) {
+        int parentIdx = (idx - 1) / 2;
+        if ((minHeap && queue_[parentIdx] > queue_[idx]) || 
+            (!minHeap && queue_[parentIdx] < queue_[idx])) {
+            std::swap(queue_[parentIdx], queue_[idx]);
+            idx = parentIdx;
+        } else {
+            break;
+        }
+    }
 }
 
 template <typename T>
 T Heap<T>::extractTop() {
-  if (isEmpty()) return T{};
+    if (isEmpty()) throw std::runtime_error("Heap is empty");
 
-  T top = data[0];
-  data[0] = data.back();
-  data.pop_back();
+    T top = queue_[0];
+    queue_[0] = queue_[size_ - 1];
+    queue_.pop_back();
+    size_--;
 
-  int index = 0;
-  int size = data.size();
+  
+    int idx = 0;
+    while (true) {
+        int leftChildIdx = 2 * idx + 1;
+        int rightChildIdx = 2 * idx + 2;
+        int swapIdx = idx;
 
-  while (true) {
-    int leftChild = 2 * index + 1;
-    int rightChild = 2 * index + 2;
-    int swapIndex = index;
+        if (leftChildIdx < size_ && 
+            ((minHeap && queue_[leftChildIdx] < queue_[swapIdx]) || 
+             (!minHeap && queue_[leftChildIdx] > queue_[swapIdx]))) {
+            swapIdx = leftChildIdx;
+        }
 
-    if (leftChild < size && ((minHeap && data[leftChild] < data[swapIndex]) || (!minHeap && data[leftChild] > data[swapIndex]))) {
-      swapIndex = leftChild;
+        if (rightChildIdx < size_ && 
+            ((minHeap && queue_[rightChildIdx] < queue_[swapIdx]) || 
+             (!minHeap && queue_[rightChildIdx] > queue_[swapIdx]))) {
+            swapIdx = rightChildIdx;
+        }
+
+        if (swapIdx != idx) {
+            std::swap(queue_[idx], queue_[swapIdx]);
+            idx = swapIdx;
+        } else {
+            break;
+        }
     }
-    if (rightChild < size && ((minHeap && data[rightChild] < data[swapIndex]) || (!minHeap && data[rightChild] > data[swapIndex]))) {
-      swapIndex = rightChild;
-    }
 
-    if (swapIndex == index) break;
-
-    std::swap(data[index], data[swapIndex]);
-    index = swapIndex;
-  }
-
-  return top;
+    return top;
 }
+
 
 template <typename T>
 T Heap<T>::peek() const {
-  if (!isEmpty()) {
-    return data[0];
-  }
-  return T{};
+    if (isEmpty()) throw std::runtime_error("Heap is empty");
+    return queue_[0];
 }
+
 
 template <typename T>
 size_t Heap<T>::size() const {
-  return data.size();
+    return size_;
 }
+
 
 template <typename T>
 bool Heap<T>::isEmpty() const {
-  return data.empty();
+    return size_ == 0;
 }
+
 
 template <typename T>
 void Heap<T>::clear() {
-  data.clear();
+    queue_.clear();
+    size_ = 0;
 }
 
 #endif

@@ -19,6 +19,8 @@ automático, con el mismo prototipo mostrado en este archivo.
 template <typename T>
 struct Heap {
     bool minHeap;
+    std::vector<T> queue_;  
+    size_t size_;  
 
     Heap(bool isMinHeap = true);
 
