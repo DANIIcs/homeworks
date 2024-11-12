@@ -10,7 +10,7 @@
 template <typename T>
 Heap<T>::Heap(bool isMinHeap) : minHeap(isMinHeap), size_(0) {}
 
-// Insertar un elemento en el Heap y ajustar posición
+
 template <typename T>
 void Heap<T>::insert(T const& element) {
     queue_.push_back(element);
@@ -32,7 +32,6 @@ void Heap<T>::insert(T const& element) {
 
 template <typename T>
 T Heap<T>::extractTop() {
-    if (isEmpty()) throw std::runtime_error("Heap is empty");
 
     T top = queue_[0];
     queue_[0] = queue_[size_ - 1];
@@ -72,7 +71,7 @@ T Heap<T>::extractTop() {
 
 template <typename T>
 T Heap<T>::peek() const {
-    if (isEmpty()) throw std::runtime_error("Heap is empty");
+    
     return queue_[0];
 }
 
