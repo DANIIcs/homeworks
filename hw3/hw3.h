@@ -18,6 +18,15 @@ automático, con el mismo prototipo mostrado en este archivo.
 
 template <typename T>
 struct BST {
+    struct Node {
+        T value;       // Valor almacenado en el nodo
+        Node* left;    // Puntero al hijo izquierdo
+        Node* right;   // Puntero al hijo derecho
+
+        Node(T const& val) : value(val), left(nullptr), right(nullptr) {}
+    };
+
+    Node* root; // Raíz del árbol
     BST();
 
     ~BST();
