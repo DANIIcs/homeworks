@@ -28,7 +28,7 @@ void BST<T>::insert(T const& value) {
     } else if (value > current->value) {
       current = current->right;
     } else {
-      return; // El valor ya existe, no hacemos nada.
+      return;
     }
   }
 
@@ -52,11 +52,11 @@ bool BST<T>::search(T const& value) const {
     } else if (value > current->value) {
       current = current->right;
     } else {
-      return true; // Encontrado
+      return true;
     }
   }
 
-  return false; // No encontrado
+  return false;
 }
 
 template <typename T>
@@ -74,10 +74,9 @@ void BST<T>::remove(T const& value) {
   }
 
   if (current == nullptr) {
-    return; // No encontrado
+    return;
   }
 
-  // Caso 1: Nodo hoja
   if (current->left == nullptr && current->right == nullptr) {
     if (current == root) {
       root = nullptr;
@@ -88,7 +87,6 @@ void BST<T>::remove(T const& value) {
     }
     delete current;
   }
-  // Caso 2: Nodo con un hijo
   else if (current->left == nullptr || current->right == nullptr) {
     Node* child = (current->left != nullptr) ? current->left : current->right;
 
@@ -101,7 +99,6 @@ void BST<T>::remove(T const& value) {
     }
     delete current;
   }
-  // Caso 3: Nodo con dos hijos
   else {
     Node* successorParent = current;
     Node* successor = current->right;
@@ -126,10 +123,9 @@ void BST<T>::remove(T const& value) {
 template <typename T>
 size_t BST<T>::size() const {
   if (root == nullptr) {
-    return 0; // Si el árbol está vacío, el tamaño es 0.
+    return 0;
   }
 
-  // Utilizamos una pila para recorrer el árbol sin recursión explícita.
   size_t count = 0;
   std::vector<Node*> stack;
   stack.push_back(root);
@@ -139,7 +135,6 @@ size_t BST<T>::size() const {
     stack.pop_back();
     count++;
 
-    // Añadimos los hijos al stack para continuar recorriendo.
     if (current->left != nullptr) {
       stack.push_back(current->left);
     }
