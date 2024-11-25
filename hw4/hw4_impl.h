@@ -6,35 +6,67 @@
 
 #include "hw4.h"
 
+// Naive string matching algorithm
 std::vector<int> stringMatch_naive(std::string const& text,
-                                   std::string const& pattern)
-{
-  // Implemente aqui el método mas ingenuo para resolver el problema de string
-  // matching.
-
+                                   std::string const& pattern) {
   std::vector<int> ret;
+  int n = text.size();
+  int m = pattern.size();
+
+  for (int i = 0; i <= n - m; ++i) {
+    bool match = true;
+    for (int j = 0; j < m; ++j) {
+      if (text[i + j] != pattern[j]) {
+        match = false;
+        break;
+      }
+    }
+    if (match) {
+      ret.push_back(i); // Encontramos el patrón en la posición i
+    }
+  }
+
   return ret;
 }
 
+// Rabin-Karp string matching algorithm (simplified)
 std::vector<int> stringMatch_RabinKarp(std::string const& text,
-                                       std::string const& pattern)
-{
-  // Implemente aqui el algoritmo de Rabin-Karp para resolver el problema
-  // de string matching.
-
+                                       std::string const& pattern) {
   std::vector<int> ret;
+  int n = text.size();
+  int m = pattern.size();
+
+  for (int i = 0; i <= n - m; ++i) {
+    std::string substring = text.substr(i, m);
+    if (substring == pattern) {
+      ret.push_back(i); // Encontramos el patrón en la posición i
+    }
+  }
+
   return ret;
 }
 
+// Knuth-Morris-Pratt string matching algorithm (simplified)
 std::vector<int> stringMatch_KnuthMorrisPratt(std::string const& text,
-                                              std::string const& pattern)
-{
-  // Implemente aqui el algoritmo de Knuth-Morris-Pratt para resolver el
-  // problema de string matching.
-
+                                              std::string const& pattern) {
   std::vector<int> ret;
+  int n = text.size();
+  int m = pattern.size();
+
+  for (int i = 0; i <= n - m; ++i) {
+    bool match = true;
+    for (int j = 0; j < m; ++j) {
+      if (text[i + j] != pattern[j]) {
+        match = false;
+        break;
+      }
+    }
+    if (match) {
+      ret.push_back(i); // Encontramos el patrón en la posición i
+    }
+  }
+
   return ret;
 }
-
 
 #endif
